@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_prompt_title">Send location updates</string>
+    <string name="location_prompt_body">We\'d like to use your location to demonstrate geofencing capabilities</string>
+</resources>
