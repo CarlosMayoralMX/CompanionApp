@@ -37,7 +37,7 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -67,14 +67,13 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // Kumulos debug & release libraries
-    debugImplementation 'com.kumulos.android:kumulos-android-debug:6.1.0'
-    releaseImplementation 'com.kumulos.android:kumulos-android-release:6.1.0'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+
+    implementation project(':kumulos')
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -6,6 +6,7 @@ import './demos/analytics.dart';
 import './demos/demo.dart' show DemoScreen;
 import './demos/push.dart';
 import './demos/location.dart';
+import './demos/inApp.dart';
 
 enum ConfirmAction { CANCEL, ACCEPT }
 
@@ -30,6 +31,13 @@ class HomeScreen extends StatelessWidget {
                 image: 'assets/push.png',
                 destination:
                     MaterialPageRoute(builder: (context) => PushDemoScreen())),
+            _renderCard(context,
+                title: 'In App Messages',
+                description: 'Keep users engaged with in app messages.',
+                heroTag: 'inApp',
+                image: 'assets/inapp.png',
+                destination:
+                    MaterialPageRoute(builder: (context) => InAppDemo())),
             _renderCard(context,
                 title: 'Geolocation',
                 description:

@@ -6,11 +6,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 import com.kumulos.android.Installation;
 import com.kumulos.android.Kumulos;
 import com.kumulos.android.KumulosConfig;
+import com.kumulos.android.KumulosInApp;
 import com.kumulos.companion.location.LocationTrackingInitializer;
 
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "com.kumulos.flutter";
     private static final String PUSH_CHANNEL = "com.kumulos.companion.push";
+    private static final String IN_APP_CHANNEL = "com.kumulos.companion.inapp";
     private static final String LOCATION_CHANNEL = "com.kumulos.companion.location";
     private static final String PAIRING_CHANNEL = "com.kumulos.companion.pairing";
 
@@ -34,6 +36,7 @@ public class MainActivity extends FlutterActivity {
     private LocationTrackingInitializer mLocationTrackingInitializer;
 
     public static MethodChannel sPushChannel = null;
+    public static MethodChannel sInAppChannel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +73,11 @@ public class MainActivity extends FlutterActivity {
                             List<String> args = (List<String>) methodCall.arguments;
                             apiKey = args.get(0);
                             secretKey = args.get(1);
-                            KumulosConfig config = new KumulosConfig.Builder(apiKey, secretKey).build();
+                            KumulosConfig config = new KumulosConfig.Builder(apiKey, secretKey)
+                                .enableInAppMessaging(KumulosConfig.InAppConsentStrategy.AUTO_ENROLL)
+                                .build();
                             Kumulos.initialize(getApplication(), config);
+                            KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandlerImpl());
                         } catch (Exception e) {
                             result.error(e.getMessage(), null, null);
                             return;
@@ -128,8 +134,13 @@ public class MainActivity extends FlutterActivity {
 
                     mLocationTrackingInitializer.stopLocationTracking(MainActivity.this);
 
-                    SharedPreferences sp  = getSharedPreferences("KUMULOS", MODE_PRIVATE);
+                    SharedPreferences sp = getSharedPreferences("KUMULOS", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
+                    editor.clear();
+                    editor.apply();
+
+                    sp = getSharedPreferences("kumulos_prefs", MODE_PRIVATE);
+                    editor = sp.edit();
                     editor.clear();
                     editor.apply();
 
@@ -154,6 +165,8 @@ public class MainActivity extends FlutterActivity {
                     }
                 }
         );
+
+        sInAppChannel = new MethodChannel(getFlutterView(), IN_APP_CHANNEL);
 
         setupLocationHandling();
     }

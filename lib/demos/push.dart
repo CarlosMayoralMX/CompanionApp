@@ -6,6 +6,7 @@ import './eventSubscriptionsManager.dart';
 import './demo.dart' show DemoContainer;
 import 'dart:io' show Platform;
 import 'dart:core';
+import './inApp.dart';
 
 enum PushStep { pushRegister, pushUnauthorized, waitingForPush, pushReceived }
 
@@ -109,7 +110,7 @@ class PushDemoState extends State<PushDemoScreen> {
         heroTag: 'push',
         onSkip: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LocationDemo()));
+              context, MaterialPageRoute(builder: (context) => InAppDemo()));
 
           if (step != PushStep.pushReceived) {
             Kumulos.instance.trackStepSkipped('push');

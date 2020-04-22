@@ -33,6 +33,7 @@ def parse_KV_file(file, separator='=')
 end
 
 target 'Runner' do
+  platform :ios, '9.0'
   # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
   # referring to absolute paths on developers' machines.
   system('rm -rf .symlinks')
@@ -60,7 +61,12 @@ target 'Runner' do
   }
 
   # Kumulos pods
-  pod 'KumulosSdkObjectiveC', '~> 1.8'
+  pod 'KumulosSdkObjectiveC', '~> 4.2'
+end
+
+target 'KumulosNotificationServiceExtension' do
+  platform :ios, '10.0'
+  pod 'KumulosSdkObjectiveCExtension', '~> 4.2'
 end
 
 post_install do |installer|

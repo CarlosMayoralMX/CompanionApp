@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 import './kumulos.dart';
 
 class AppMeta {
@@ -71,8 +72,14 @@ class PairingManager {
   }
 
   Future<PairingState> pairWithCode(String code) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
     final installId = await Kumulos.instance.getInstallId();
-    final data = {'code': code, 'uuid': installId};
+    final data = {
+      'code': code,
+      'uuid': installId,
+      'version': packageInfo.version
+    };
 
     final url = 'https://accounts.app.delivery/companion-auth';
 

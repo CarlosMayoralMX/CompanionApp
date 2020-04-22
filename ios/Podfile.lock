@@ -1,48 +1,48 @@
 PODS:
   - Flutter (1.0.0)
-  - KSCrash (1.15.19):
-    - KSCrash/Installations (= 1.15.19)
-  - KSCrash/Installations (1.15.19):
+  - KSCrash (1.15.21):
+    - KSCrash/Installations (= 1.15.21)
+  - KSCrash/Installations (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting
-  - KSCrash/Recording (1.15.19):
-    - KSCrash/Recording/Tools (= 1.15.19)
-  - KSCrash/Recording/Tools (1.15.19)
-  - KSCrash/Reporting (1.15.19):
+  - KSCrash/Recording (1.15.21):
+    - KSCrash/Recording/Tools (= 1.15.21)
+  - KSCrash/Recording/Tools (1.15.21)
+  - KSCrash/Reporting (1.15.21):
     - KSCrash/Recording
-    - KSCrash/Reporting/Filters (= 1.15.19)
-    - KSCrash/Reporting/MessageUI (= 1.15.19)
-    - KSCrash/Reporting/Sinks (= 1.15.19)
-    - KSCrash/Reporting/Tools (= 1.15.19)
-  - KSCrash/Reporting/Filters (1.15.19):
+    - KSCrash/Reporting/Filters (= 1.15.21)
+    - KSCrash/Reporting/MessageUI (= 1.15.21)
+    - KSCrash/Reporting/Sinks (= 1.15.21)
+    - KSCrash/Reporting/Tools (= 1.15.21)
+  - KSCrash/Reporting/Filters (1.15.21):
     - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Alert (= 1.15.19)
-    - KSCrash/Reporting/Filters/AppleFmt (= 1.15.19)
-    - KSCrash/Reporting/Filters/Base (= 1.15.19)
-    - KSCrash/Reporting/Filters/Basic (= 1.15.19)
-    - KSCrash/Reporting/Filters/GZip (= 1.15.19)
-    - KSCrash/Reporting/Filters/JSON (= 1.15.19)
-    - KSCrash/Reporting/Filters/Sets (= 1.15.19)
-    - KSCrash/Reporting/Filters/Stringify (= 1.15.19)
-    - KSCrash/Reporting/Filters/Tools (= 1.15.19)
-  - KSCrash/Reporting/Filters/Alert (1.15.19):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/AppleFmt (1.15.19):
+    - KSCrash/Reporting/Filters/Alert (= 1.15.21)
+    - KSCrash/Reporting/Filters/AppleFmt (= 1.15.21)
+    - KSCrash/Reporting/Filters/Base (= 1.15.21)
+    - KSCrash/Reporting/Filters/Basic (= 1.15.21)
+    - KSCrash/Reporting/Filters/GZip (= 1.15.21)
+    - KSCrash/Reporting/Filters/JSON (= 1.15.21)
+    - KSCrash/Reporting/Filters/Sets (= 1.15.21)
+    - KSCrash/Reporting/Filters/Stringify (= 1.15.21)
+    - KSCrash/Reporting/Filters/Tools (= 1.15.21)
+  - KSCrash/Reporting/Filters/Alert (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/Base (1.15.19):
-    - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.19):
+  - KSCrash/Reporting/Filters/AppleFmt (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/GZip (1.15.19):
+  - KSCrash/Reporting/Filters/Base (1.15.21):
+    - KSCrash/Recording
+  - KSCrash/Reporting/Filters/Basic (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/JSON (1.15.19):
+  - KSCrash/Reporting/Filters/GZip (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/Sets (1.15.19):
+  - KSCrash/Reporting/Filters/JSON (1.15.21):
+    - KSCrash/Recording
+    - KSCrash/Reporting/Filters/Base
+  - KSCrash/Reporting/Filters/Sets (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/AppleFmt
     - KSCrash/Reporting/Filters/Base
@@ -50,52 +50,62 @@ PODS:
     - KSCrash/Reporting/Filters/GZip
     - KSCrash/Reporting/Filters/JSON
     - KSCrash/Reporting/Filters/Stringify
-  - KSCrash/Reporting/Filters/Stringify (1.15.19):
+  - KSCrash/Reporting/Filters/Stringify (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/Tools (1.15.19):
+  - KSCrash/Reporting/Filters/Tools (1.15.21):
     - KSCrash/Recording
-  - KSCrash/Reporting/MessageUI (1.15.19):
+  - KSCrash/Reporting/MessageUI (1.15.21):
     - KSCrash/Recording
-  - KSCrash/Reporting/Sinks (1.15.19):
+  - KSCrash/Reporting/Sinks (1.15.21):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters
     - KSCrash/Reporting/Tools
-  - KSCrash/Reporting/Tools (1.15.19):
+  - KSCrash/Reporting/Tools (1.15.21):
     - KSCrash/Recording
-  - KumulosSdkObjectiveC (1.8.0):
+  - KumulosSdkObjectiveC (4.2.2):
     - KSCrash (~> 1.15)
+  - KumulosSdkObjectiveCExtension (4.2.2)
+  - package_info (0.0.1):
+    - Flutter
   - qrcode_reader (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios-release`)
-  - KumulosSdkObjectiveC (~> 1.8)
+  - Flutter (from `.symlinks/flutter/ios`)
+  - KumulosSdkObjectiveC (~> 4.2)
+  - KumulosSdkObjectiveCExtension (~> 4.2)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - qrcode_reader (from `.symlinks/plugins/qrcode_reader/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - KSCrash
     - KumulosSdkObjectiveC
+    - KumulosSdkObjectiveCExtension
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: ".symlinks/flutter/ios-release"
+    :path: ".symlinks/flutter/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   qrcode_reader:
     :path: ".symlinks/plugins/qrcode_reader/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  KSCrash: 49855f7867f7d456905c241640a203f53588497d
-  KumulosSdkObjectiveC: 3cdd5a03f9098b22ca3c2bd580026ccae8eb848c
-  qrcode_reader: da11877390dff62dd3783964618d666a857e34c8
-  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  KSCrash: 47bc2f48bb5537f112432cfbea9a359aaf7a6cc5
+  KumulosSdkObjectiveC: 6eea19955812f86ba7e6b6203e7f0402eaca2674
+  KumulosSdkObjectiveCExtension: 22a53a3d062d9a2ecc0107dbb9f79ce8db138b09
+  package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
+  qrcode_reader: 09b34d43b4c08fe5b63a6e56c96789bcea7b9148
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
 
-PODFILE CHECKSUM: d8e6455d0b03fe3fe8aa867eacf21673efbdae6c
+PODFILE CHECKSUM: 6c832db746a0f9b8c144c8cdd8b5ab6d1eccc881
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.4

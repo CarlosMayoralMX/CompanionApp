@@ -9,16 +9,50 @@
 @property (nonatomic, strong) CLLocationManager *lm;
 @property (nonatomic, strong) FlutterMethodChannel *locationChannel;
 @property (nonatomic, strong) FlutterMethodChannel *pushChannel;
+@property (nonatomic, strong) FlutterMethodChannel *inAppChannel;
 
 @end
 
 @implementation AppDelegate
 
+// HACK: Due to https://github.com/flutter/engine/pull/8843 our swizzled SDK delegate method
+//       for handling background notifications (required to sync in-app messages) is not called.
+//
+//       This is because the OS asks the app delegate if it responds to the selector using this
+//       method, and the FlutterAppDelegate says no because we have no plugins registered to use it.
+//
+//       By implementing an override with an escape hatch, we fix the problem and our required delegate
+//       is called once more.
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    if (@selector(application:didReceiveRemoteNotification:fetchCompletionHandler:) == aSelector) {
+        return YES;
+    }
+
+    return [super respondsToSelector:aSelector];
+}
+
+- (void)configureHandlers:(KSConfig*)cfg {
+    [cfg setInAppDeepLinkHandler:^(NSDictionary * _Nonnull data) {
+        if (self.inAppChannel != nil){
+            [self.inAppChannel invokeMethod:@"inAppReceived" arguments:nil];
+        }
+    }];
+    
+    [cfg setForegroundPushPresentationOptions:UNNotificationPresentationOptionAlert];
+    [cfg setPushReceivedInForegroundHandler:^(KSPushNotification * _Nonnull notification) {
+        if (self.pushChannel == nil) {
+            return;
+        }
+        NSDictionary* alert = notification.aps[@"alert"];
+        NSString* title = alert ? alert[@"title"] : @"";
+        NSString* message = alert ? alert[@"body"] : @"";
+        NSDictionary* map = @{ @"title" : title, @"message" : message};
+        [self.pushChannel invokeMethod:@"pushReceived" arguments:map];
+    }];
+}
+
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-    // Register the app delegate as the notification center handler
-    [UNUserNotificationCenter.currentNotificationCenter setDelegate:self];
 
     // Kumulos SDK
     NSString* apiKey = [NSUserDefaults.standardUserDefaults objectForKey:@"K_API_KEY"];
@@ -26,10 +60,17 @@
 
     if (apiKey != nil && secretKey != nil) {
         KSConfig* cfg = [KSConfig configWithAPIKey:apiKey andSecretKey:secretKey];
+        [cfg enableInAppMessaging:KSInAppConsentStrategyAutoEnroll];
+
+        [self configureHandlers:cfg];
+
         [Kumulos initializeWithConfig:cfg];
 
         // Location
         [self setupLocationMonitoring];
+        
+        //- Do not remove this registration even if it looks redundant - for reasons unexplained flutter will not call back the didReceiveRemoteNotification delegate so In-App messages will not be synced.
+        [Kumulos.shared pushRequestDeviceToken];
     }
 
     // Flutter interop
@@ -65,7 +106,8 @@
                 [weakSelf.lm stopMonitoringSignificantLocationChanges];
                 weakSelf.lm = nil;
             }
-
+            
+            [NSUserDefaults.standardUserDefaults removeObjectForKey:@"KumulosInAppConsented"];
             [NSUserDefaults.standardUserDefaults removeObjectForKey:@"K_API_KEY"];
             [NSUserDefaults.standardUserDefaults removeObjectForKey:@"K_SECRET_KEY"];
             [NSUserDefaults.standardUserDefaults removeObjectForKey:@"locationSent"];
@@ -88,6 +130,12 @@
             result(FlutterMethodNotImplemented);
         }
     }];
+
+    //in-app
+    self.inAppChannel = [FlutterMethodChannel
+                             methodChannelWithName:@"com.kumulos.companion.inapp"
+                             binaryMessenger:controller];
+
 
     //location
     self.locationChannel = [FlutterMethodChannel
@@ -162,68 +210,7 @@
 }
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    [Kumulos.shared pushRegisterWithDeviceToken:deviceToken];
-
     [self.pushChannel invokeMethod:@"pushRegistered" arguments:nil];
-}
-
-// iOS 7-9 handler for push notifications (bg + fg)
-// iOS 10+ handler for background data pushes (content-available)
-- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    if (UIApplication.sharedApplication.applicationState == UIApplicationStateInactive) {
-        [Kumulos.shared pushTrackOpenFromNotification:userInfo];
-    }
-
-    NSDictionary* alert = userInfo[@"aps"][@"alert"];
-    NSString* title = @"";
-    NSString* message = @"";
-    if (alert != nil){
-       title = alert[@"title"];
-       message = alert[@"body"];
-    }
-
-    NSDictionary* map = @{ @"title" : title, @"message" : message};
-
-    [self.pushChannel invokeMethod:@"pushReceived" arguments:map];
-
-    // Handle opening URLs on notification taps
-    NSURL* url = [NSURL URLWithString:userInfo[@"custom"][@"u"]];
-    if (url) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIApplication.sharedApplication openURL:url];
-        });
-    }
-
-    completionHandler(UIBackgroundFetchResultNoData);
-}
-
-// Called on iOS10 when your app is in the foreground to allow customizing the display of the notification
-- (void) userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-
-    NSString* title = notification.request.content.title;
-    NSString* message = notification.request.content.body;
-
-    NSDictionary* map = @{ @"title" : title, @"message" : message};
-
-    [self.pushChannel invokeMethod:@"pushReceived" arguments:map];
-
-    completionHandler(UNNotificationPresentationOptionAlert);
-}
-
-// iOS10 handler for when a user taps a notification
-- (void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
-    NSDictionary* userInfo = response.notification.request.content.userInfo;
-    [Kumulos.shared pushTrackOpenFromNotification:userInfo];
-
-    // Handle URL pushes
-    NSURL* url = [NSURL URLWithString:userInfo[@"custom"][@"u"]];
-    if (url) {
-        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
-            /* noop */
-        }];
-    }
-
-    completionHandler();
 }
 
 #pragma mark - Kumulos
@@ -236,6 +223,8 @@
     [NSUserDefaults.standardUserDefaults setObject:secretKey forKey:@"K_SECRET_KEY"];
 
     KSConfig* cfg = [KSConfig configWithAPIKey:apiKey andSecretKey:secretKey];
+    [cfg enableInAppMessaging:KSInAppConsentStrategyAutoEnroll];
+    [self configureHandlers:cfg];
     [Kumulos initializeWithConfig:cfg];
 
     result(nil);

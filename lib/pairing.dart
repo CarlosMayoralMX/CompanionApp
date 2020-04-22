@@ -24,7 +24,8 @@ class PairingState extends State<PairingScreen> {
         ),
         body: Builder(builder: (BuildContext context) {
           return Container(
-              padding: EdgeInsets.all(24), child: this.renderBody(context));
+              padding: EdgeInsets.only(left: 24, right: 24, bottom: 24),
+              child: this.renderBody(context));
         }));
   }
 

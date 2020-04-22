@@ -28,14 +28,15 @@
 	<string>We'd like to use the camera to scan the QR code to pair your companion app</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We'd like to use your location to demonstrate geofencing capabilities</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We'd like to use your location to demonstrate geofencing capabilities</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We'd like to use your location to demonstrate geofencing capabilities</string>
 	<key>NSLocationUsageDescription</key>
 	<string>We'd like to use your location to demonstrate geofencing capabilities</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We'd like to use your location to demonstrate geofencing capabilities</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>location</string>
 		<string>remote-notification</string>
 	</array>

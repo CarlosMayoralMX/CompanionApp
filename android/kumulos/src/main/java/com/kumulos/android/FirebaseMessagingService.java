@@ -1,8 +1,6 @@
-package com.kumulos.companion;
+package com.kumulos.android;
 
 import com.google.firebase.messaging.RemoteMessage;
-import com.kumulos.android.Kumulos;
-import com.kumulos.android.FirebaseMessageHandler;
 import android.content.SharedPreferences;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
@@ -12,7 +10,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onNewToken(String token) {
         SharedPreferences prefs = getSharedPreferences("KUMULOS", MODE_PRIVATE);
-
+        
+        //Kompanion specific
         boolean sdkInitialized = prefs.contains("K_API_KEY");
         if (sdkInitialized){
             Kumulos.pushTokenStore(this, token);
